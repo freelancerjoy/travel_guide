@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "290828629882",
+    "project_id": "travel-guide-cc5a5",
+    "storage_bucket": "travel-guide-cc5a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290828629882:android:43ec04992593ebac9348c3",
+        "android_client_info": {
+          "package_name": "com.example.travel_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290828629882-r9lpfcailmpm50pbmrg0t9f4krudtco7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGZpWe0PTQfjGUB69cREXo0Q-YJbalECM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290828629882-r9lpfcailmpm50pbmrg0t9f4krudtco7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
