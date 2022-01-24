@@ -20,9 +20,12 @@ class _region_pageState extends State<region_page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDEcoration(context, '${widget.region}'),
-      floatingActionButton: FloatingActionButton(onPressed: (){
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => AddTravelSpot()));
-      },),
+      },
+        child: Icon(Icons.add),
+      ),
       body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,

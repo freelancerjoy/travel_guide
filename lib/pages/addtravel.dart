@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:travel_guide/widgets/buttons.dart';
 import 'dart:io';
 
 import 'package:travel_guide/widgets/formdecration.dart';
@@ -17,16 +18,11 @@ class _AddTravelSpotState extends State<AddTravelSpot> {
   String? selectTravelRegion;
   String? selectTravelSpot;
 
-  ImagePicker image = ImagePicker();
+  ImagePicker picker = ImagePicker();
+  File? _image;
   File? file;
   String uri = "";
 
-  Future <void> CameraImag() async {
-    var img = await image.pickImage(source: ImageSource.camera);
-    setState(() {
-      file = File(img!.path);
-    });
-  }
 
 
   @override
@@ -45,18 +41,29 @@ class _AddTravelSpotState extends State<AddTravelSpot> {
       child: ListView(
         children: [
           ClipRRect(
-            child: Image.asset('img/1.png',height: 200,width: 200,),
+
+              child: _image !=null ?Image.file(
+          _image!,
+          width: size.width,
+          height: size.height * 0.3,
+          fit: BoxFit.contain,
+            ):
+           Icon(Icons.image,size: size.height * 0.3,color: Theme.of(context).primaryColor,)
+
+    // Image.asset('img/1.png',height: 200,width: 200,),
           ),
           SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(onPressed: (){
-                CameraImag();
+                _getImageFromCamera();
               },
                   icon: Icon(Icons.camera)),
 
-              IconButton(onPressed: (){},
+              IconButton(onPressed: (){
+                _getImageFromGallery();
+              },
                   icon: Icon(Icons.image)),
             ],
           ),
@@ -82,7 +89,7 @@ class _AddTravelSpotState extends State<AddTravelSpot> {
             width: MediaQuery.of(context).size.width,
            child: DropdownButtonHideUnderline(
              child: DropdownButton(
-               value: selectTravelSpot,
+               value: selectTravelRegion,
                hint: Container(
                  width: size.width*.75,
                  child: Text('Select Region', style: TextStyle(
@@ -90,20 +97,21 @@ class _AddTravelSpotState extends State<AddTravelSpot> {
                    fontSize: size.height*0.023
                  ),),
                ),
-               items: StaticVariable.TravelRegion.map((selectTravelSpot){
+               items: StaticVariable.TravelRegion.map((selectTravelRegion){
                  return DropdownMenuItem(
                      child: Container(
                    width: size.width*.75,
-                       child: Text(selectTravelSpot,style: TextStyle(
+                       child: Text(selectTravelRegion,style: TextStyle(
                          color: Colors.grey[900],
                          fontSize: 16,
                        ),),
                  ),
-                 value: selectTravelSpot,);
+                 value: selectTravelRegion,);
                }).toList(),
                onChanged: (newValue){
                  setState(() {
-                   selectTravelSpot=newValue as String?;
+                   selectTravelRegion=newValue as String?;
+                   selectTravelSpot=null;
                  });
                },
                dropdownColor: Colors.white,
@@ -124,7 +132,7 @@ class _AddTravelSpotState extends State<AddTravelSpot> {
             width: MediaQuery.of(context).size.width,
             child: DropdownButtonHideUnderline(
               child: DropdownButton(
-                value: selectTravelRegion,
+                value: selectTravelSpot,
                 hint: Container(
                   width: size.width*.75,
                   child: Text('Select Spot', style: TextStyle(
@@ -132,7 +140,8 @@ class _AddTravelSpotState extends State<AddTravelSpot> {
                       fontSize: size.height*0.023
                   ),),
                 ),
-                items: StaticVariable.TravelRegion.map((selectTravelRegion){
+                items: selectTravelRegion==null?null
+                    :selectTravelRegion=='Travel Bangladesh'?StaticVariable.TravleBD.map((selectTravelRegion){
                   return DropdownMenuItem(
                     child: Container(
                       width: size.width*.75,
@@ -142,20 +151,69 @@ class _AddTravelSpotState extends State<AddTravelSpot> {
                       ),),
                     ),
                     value: selectTravelRegion,);
+                }).toList()
+                    :StaticVariable.TravleWorld.map((selectTravelSpot){
+                  return DropdownMenuItem(
+                    child: Container(
+                      width: size.width*.75,
+                      child: Text(selectTravelSpot,style: TextStyle(
+                        color: Colors.grey[900],
+                        fontSize: 16,
+                      ),),
+                    ),
+                    value: selectTravelSpot,);
                 }).toList(),
                 onChanged: (newValue){
                   setState(() {
-                    selectTravelRegion=newValue as String?;
+                    selectTravelSpot=newValue as String?;
                   });
                 },
                 dropdownColor: Colors.white,
               ),
             ),
           ),
+          SizedBox(height: 10,),
+          TextField(
+            maxLines: 5,
+            keyboardType: TextInputType.text,
+            decoration: FormDecoration.copyWith(
+              labelText: 'Description',
+              labelStyle: TextStyle(color: Colors.black),
+            ),
+          ),
+          SizedBox(height: 10,),
+          InkWell(
+            onTap: (){},
+            child: button(context, 'Submit'),
+          )
+
         ],
       ),
     );
   }
+  Future<void> _getImageFromGallery()async{
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery,maxWidth: 300,maxHeight: 300);
+    if(pickedFile!=null){
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }else {
+      // showSnackBar(_scaffoldKey, 'No image selected', Colors.deepOrange);
+      Navigator.pop(context);
+    }
+  }
+  Future<void> _getImageFromCamera()async{
+    final pickedFile = await picker.pickImage(source: ImageSource.camera,maxWidth: 300,maxHeight: 300);
+    if(pickedFile!=null){
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }else {
+      // showSnackBar(_scaffoldKey, 'No image selected', Colors.deepOrange);
+      Navigator.pop(context);
+    }
+  }
+
 }
 
 
