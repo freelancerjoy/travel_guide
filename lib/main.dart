@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_guide/pages/provider.dart';
 import 'package:travel_guide/pages/read_provider.dart';
 import 'package:travel_guide/pages/sircrud.dart';
+import 'package:travel_guide/pages/travel_provider.dart';
 import 'package:travel_guide/pages/upload_img.dart';
 
 Future <void> main()async {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context)=>CounterProvider(),),
+          ChangeNotifierProvider(create: (context)=>TravelProvider(),),
         ],
       child: MaterialApp(
       debugShowCheckedModeBanner: false,
